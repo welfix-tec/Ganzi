@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Ganzi – Shop | Rwandan Coffee, Polish Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #1E3A2F;
+            --green-light: #2a5040;
+            --red: #9E2A2B;
+            --amber: #D4A373;
+            --amber-light: #e8c4a0;
+            --cream: #FDF7F0;
+            --charcoal: #1C1C1C;
+            --white: #ffffff;
+            --folk-border: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3Cpath d='M18 10 Q25 2 32 10 Q39 18 46 10 Q53 2 60 10 Q67 18 74 10' stroke='%239E2A2B' fill='none' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='70' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+        }
+
+        /* floating beans (same as home) */
+        .beans-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bean {
+            position: absolute;
+            width: 18px;
+            height: 28px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at 35% 35%, #a07040, #3a1a08);
+            opacity: 0.07;
+            animation: floatBean linear infinite;
+        }
+
+        .bean::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(30deg);
+            width: 2px;
+            height: 70%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+        }
+
+        @keyframes floatBean {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+            }
+        }
+
+        /* folk divider */
+        .folk-divider {
+            height: 20px;
+            background-image: var(--folk-border);
+            background-repeat: repeat-x;
+            background-position: center;
+            opacity: 0.6;
+            margin: 0 auto;
+        }
+
+        /* scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* navigation (identical to home) */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(30, 58, 47, 0.96);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            height: 70px;
+            border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 34px;
+            height: 34px;
+        }
+
+        .nav-logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: var(--amber);
+            letter-spacing: 0.18em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(253, 247, 240, 0.85);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--amber);
+        }
+
+        .nav-cart {
+            color: rgba(253, 247, 240, 0.85);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-cart:hover {
+            color: var(--amber);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--red);
+            color: white;
+            font-size: 0.6rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--amber);
+            transition: all 0.3s;
+        }
+
+        /* shop hero (smaller) */
+        .shop-hero {
+            background: linear-gradient(135deg, rgba(30, 58, 47, 0.9), rgba(28, 28, 28, 0.7)), url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1600&q=80');
+            background-size: cover;
+            background-position: center 35%;
+            padding: 140px 8% 80px;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+        }
+
+        .shop-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .shop-hero p {
+            font-size: 1rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.85;
+        }
+
+        /* shop layout */
+        .shop-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 5% 100px;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* filters sidebar */
+        .filters-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background: white;
+            padding: 24px 20px;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-group {
+            margin-bottom: 28px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .filter-group h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--green);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .filter-option input {
+            accent-color: var(--red);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .price-range input {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .reset-filters {
+            background: none;
+            border: 1px solid var(--amber);
+            padding: 8px 16px;
+            border-radius: 40px;
+            color: var(--green);
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .reset-filters:hover {
+            background: var(--amber);
+            color: white;
+        }
+
+        /* product grid & sort */
+        .products-main {
+            flex: 1;
+        }
+
+        .sort-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .results-count {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .sort-select {
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            background: white;
+            font-family: 'Jost', sans-serif;
+            cursor: pointer;
+        }
+
+        .mobile-filter-btn {
+            display: none;
+            background: var(--green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            gap: 8px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.03);
+        }
+
+        .product-body {
+            padding: 20px 20px 24px;
+        }
+
+        .product-origin {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 6px;
+        }
+
+        .product-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        .product-notes {
+            font-size: 0.82rem;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--green);
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .add-btn {
+            padding: 8px 20px;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background: var(--red);
+        }
+
+        /* empty state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #888;
+        }
+
+        /* footer (same as home) */
+        footer {
+            background: var(--charcoal);
+            padding: 80px 8% 40px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-brand .nav-logo-text {
+            font-size: 2rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin: 1rem 0;
+            max-width: 250px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 14px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--amber);
+            border-color: var(--amber);
+            color: var(--charcoal);
+        }
+
+        .footer-col h4 {
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 300;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--amber);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 0.5rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 11px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            font-family: 'Jost', sans-serif;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            padding: 11px 18px;
+            background: var(--amber);
+            color: var(--charcoal);
+            border: none;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--green);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 50px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification.show {
+            transform: none;
+        }
+
+        /* mobile filters overlay */
+        .mobile-filters-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            display: none;
+            justify-content: flex-end;
+        }
+
+        .mobile-filters-panel {
+            width: 85%;
+            max-width: 320px;
+            background: var(--cream);
+            height: 100%;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .close-filters {
+            text-align: right;
+            font-size: 1.4rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .shop-container {
+                flex-direction: column;
+            }
+
+            .filters-sidebar {
+                display: none;
+                width: 100%;
+                position: static;
+                margin-bottom: 30px;
+            }
+
+            .mobile-filter-btn {
+                display: inline-flex;
+            }
+
+            .sort-bar {
+                flex-wrap: wrap;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--green);
+                padding: 20px;
+                gap: 1rem;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="beans-canvas" id="beansCanvas"></div>
+
+    <nav id="mainNav">
+        <a href="#" class="nav-logo">
+            <svg class="nav-logo-icon" viewBox="0 0 34 34" fill="none">
+                <ellipse cx="17" cy="17" rx="12" ry="16" fill="#D4A373" opacity="0.15" />
+                <ellipse cx="17" cy="17" rx="9" ry="12" fill="none" stroke="#D4A373" stroke-width="1.5" />
+                <path d="M17 5 Q22 11 17 17 Q12 23 17 29" stroke="#D4A373" stroke-width="1.2" fill="none" />
+                <circle cx="25" cy="9" r="3.5" fill="#9E2A2B" opacity="0.7" />
+            </svg>
+            <span class="nav-logo-text">GANZI</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Shop.html" class="active">Shop</a></li>
+            <li><a href="Story.html">Our Story</a></li>
+            <li><a href="#">Process</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div class="nav-cart"><i class="fa fa-shopping-bag"></i><span class="cart-badge" id="cartCount">0</span>
+            </div>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="shop-hero reveal">
+        <h1>Our Collection</h1>
+        <p>Directly from Rwandan hills, roasted in Kraków — each bag tells a story of craftsmanship and passion.</p>
+    </section>
+
+    <div class="folk-divider"></div>
+
+    <div class="shop-container">
+        <!-- Desktop sidebar filters -->
+        <aside class="filters-sidebar reveal" id="desktopFilters">
+            <div class="filter-group">
+                <h4>Origin (Region)</h4>
+                <label class="filter-option"><input type="checkbox" value="Nyamasheke" class="filter-origin">
+                    Nyamasheke</label>
+                <label class="filter-option"><input type="checkbox" value="Huye" class="filter-origin"> Huye</label>
+                <label class="filter-option"><input type="checkbox" value="Rulindo" class="filter-origin">
+                    Rulindo</label>
+                <label class="filter-option"><input type="checkbox" value="Gakenke" class="filter-origin">
+                    Gakenke</label>
+            </div>
+            <div class="filter-group">
+                <h4>Roast Level</h4>
+                <label class="filter-option"><input type="checkbox" value="Light" class="filter-roast"> Light</label>
+                <label class="filter-option"><input type="checkbox" value="Medium" class="filter-roast"> Medium</label>
+                <label class="filter-option"><input type="checkbox" value="Dark" class="filter-roast"> Dark</label>
+            </div>
+            <div class="filter-group">
+                <h4>Price (zł)</h4>
+                <div class="price-range">
+                    <input type="number" id="minPrice" placeholder="Min" value="0">
+                    <span>–</span>
+                    <input type="number" id="maxPrice" placeholder="Max" value="150">
+                </div>
+            </div>
+            <button class="reset-filters" id="resetFiltersBtn">Reset all filters</button>
+        </aside>
+
+        <div class="products-main">
+            <div class="sort-bar">
+                <div class="results-count" id="resultsCount">Showing 0 products</div>
+                <button class="mobile-filter-btn" id="mobileFilterBtn"><i class="fa fa-sliders-h"></i> Filters</button>
+                <select id="sortSelect" class="sort-select">
+                    <option value="default">Sort by: Featured</option>
+                    <option value="priceAsc">Price: Low to High</option>
+                    <option value="priceDesc">Price: High to Low</option>
+                    <option value="nameAsc">Name: A to Z</option>
+                </select>
+            </div>
+            <div class="product-grid" id="productGrid"></div>
+        </div>
+    </div>
+
+    <!-- mobile filters panel (hidden initially) -->
+    <div class="mobile-filters-overlay" id="mobileFiltersOverlay">
+        <div class="mobile-filters-panel">
+            <div class="close-filters" id="closeFiltersBtn">&times;</div>
+            <div class="filter-group">
+                <h4>Origin</h4>
+                <div id="mobileOriginFilters"></div>
+            </div>
+            <div class="filter-group">
+                <h4>Roast</h4>
+                <div id="mobileRoastFilters"></div>
+            </div>
+            <div class="filter-group">
+                <h4>Price</h4>
+                <div class="price-range"><input type="number" id="mobileMinPrice" placeholder="Min"
+                        value="0"><span>–</span><input type="number" id="mobileMaxPrice" placeholder="Max" value="150">
+                </div>
+            </div>
+            <button class="reset-filters" id="mobileResetBtn">Reset filters</button>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="footer-brand"><span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
+                <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.
+                </p>
+                <div class="footer-socials"><a class="social-icon" href="#"><i class="fab fa-instagram"></i></a><a
+                        class="social-icon" href="#"><i class="fab fa-facebook"></i></a><a class="social-icon"
+                        href="#"><i class="fab fa-tiktok"></i></a></div>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#">All Coffees</a></li>
+                    <li><a href="#">Ganzi Ruby</a></li>
+                    <li><a href="#">Ganzi Green</a></li>
+                    <li><a href="#">Ganzi Gold</a></li>
+                    <li><a href="#">Subscription</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Kraków Roastery</a></li>
+                    <li><a href="#">Rwanda</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <p style="font-size:0.83rem;margin-bottom:0.8rem;">New batches, stories & recipes.</p>
+                <div class="newsletter-form"><input type="email" placeholder="Your e-mail" /><button><i
+                            class="fa fa-paper-plane"></i></button></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><span>© 2025 Ganzi Coffee. All rights reserved.</span><span>Made with <span
+                    style="color:var(--red)">♥</span> in Kraków × Kigali</span></div>
+    </footer>
+
+    <div class="notification" id="notification"><i class="fa fa-check-circle"></i> <span>Added to bag!</span></div>
+
+    <script>
+        // ---------- PRODUCT DATABASE ----------
+        const products = [
+            { id: 1, name: "Ganzi Ruby", origin: "Nyamasheke", roast: "Medium", price: 68, notes: "Blackcurrant, plum, dark chocolate", image: "https://images.unsplash.com/photo-1509785307050-d4066910ec1e?w=800&q=80" },
+            { id: 2, name: "Ganzi Green", origin: "Huye", roast: "Light", price: 74, notes: "Green apple, jasmine, citrus", image: "https://images.unsplash.com/photo-1501492673258-2af1a4ece880?w=800&q=80" },
+            { id: 3, name: "Ganzi Gold", origin: "Rulindo", roast: "Medium", price: 71, notes: "Honey, apricot, caramel", image: "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80" },
+            { id: 4, name: "Volcano Peak", origin: "Nyamasheke", roast: "Dark", price: 79, notes: "Smoky, dark cocoa, walnut", image: "https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=800&q=80" },
+            { id: 5, name: "Milles Collines", origin: "Gakenke", roast: "Light", price: 82, notes: "Bergamot, peach, floral", image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80" },
+            { id: 6, name: "Kigali Nights", origin: "Huye", roast: "Dark", price: 66, notes: "Molasses, dried fig, clove", image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80" },
+            { id: 7, name: "Lake Kivu", origin: "Rulindo", roast: "Medium", price: 73, notes: "Toffee, raisin, hazelnut", image: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80" },
+            { id: 8, name: "Polish Roast", origin: "Nyamasheke", roast: "Dark", price: 69, notes: "Bread crust, dark caramel, low acidity", image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" }
+        ];
+
+        let activeFilters = { origins: [], roasts: [], minPrice: 0, maxPrice: 150 };
+        let currentSort = "default";
+
+        // cart functions (localStorage)
+        let cartTotal = 0;
+        function loadCart() {
+            const saved = localStorage.getItem("ganziCartCount");
+            cartTotal = saved ? parseInt(saved) : 0;
+            document.getElementById("cartCount").innerText = cartTotal;
+        }
+        function addToCart() {
+            cartTotal++;
+            localStorage.setItem("ganziCartCount", cartTotal);
+            document.getElementById("cartCount").innerText = cartTotal;
+            const notif = document.getElementById("notification");
+            notif.classList.add("show");
+            setTimeout(() => notif.classList.remove("show"), 2500);
+        }
+        loadCart();
+
+        // render products based on filters + sort
+        function filterAndRender() {
+            let filtered = products.filter(p => {
+                if (activeFilters.origins.length && !activeFilters.origins.includes(p.origin)) return false;
+                if (activeFilters.roasts.length && !activeFilters.roasts.includes(p.roast)) return false;
+                if (p.price < activeFilters.minPrice || p.price > activeFilters.maxPrice) return false;
+                return true;
+            });
+
+            // sorting
+            if (currentSort === "priceAsc") filtered.sort((a, b) => a.price - b.price);
+            else if (currentSort === "priceDesc") filtered.sort((a, b) => b.price - a.price);
+            else if (currentSort === "nameAsc") filtered.sort((a, b) => a.name.localeCompare(b.name));
+            else filtered.sort((a, b) => a.id - b.id); // default featured
+
+            const grid = document.getElementById("productGrid");
+            const countSpan = document.getElementById("resultsCount");
+            countSpan.innerText = `Showing ${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="empty-state"><i class="fa fa-coffee"></i><p>No coffees match your filters.<br>Try resetting them.</p></div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
+      <div class="product-card reveal">
+        <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy">
+        <div class="product-body">
+          <div class="product-origin">${p.origin} · ${p.roast} roast</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-notes">${p.notes}</div>
+          <div class="product-footer">
+            <span class="product-price">${p.price} zł / 250g</span>
+            <button class="add-btn" data-id="${p.id}">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+            // attach add-to-cart listeners to new buttons
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToCart();
+                });
+            });
+
+            // re-trigger reveal observer for new cards
+            const newCards = document.querySelectorAll('.product-card.reveal');
+            newCards.forEach(card => observer.observe(card));
+        }
+
+        // update filters from UI
+        function gatherFilters() {
+            const origins = Array.from(document.querySelectorAll('.filter-origin:checked')).map(cb => cb.value);
+            const roasts = Array.from(document.querySelectorAll('.filter-roast:checked')).map(cb => cb.value);
+            let min = parseInt(document.getElementById('minPrice').value) || 0;
+            let max = parseInt(document.getElementById('maxPrice').value) || 150;
+            activeFilters = { origins, roasts, minPrice: min, maxPrice: max };
+            filterAndRender();
+        }
+
+        // sync mobile filters with desktop
+        function syncMobileFilters() {
+            const mobileOriginsDiv = document.getElementById('mobileOriginFilters');
+            const mobileRoastDiv = document.getElementById('mobileRoastFilters');
+            mobileOriginsDiv.innerHTML = `<label class="filter-option"><input type="checkbox" value="Nyamasheke" class="mobile-origin"> Nyamasheke</label>
+      <label class="filter-option"><input type="checkbox" value="Huye" class="mobile-origin"> Huye</label>
+      <label class="filter-option"><input type="checkbox" value="Rulindo" class="mobile-origin"> Rulindo</label>
+      <label class="filter-option"><input type="checkbox" value="Gakenke" class="mobile-origin"> Gakenke</label>`;
+            mobileRoastDiv.innerHTML = `<label class="filter-option"><input type="checkbox" value="Light" class="mobile-roast"> Light</label>
+      <label class="filter-option"><input type="checkbox" value="Medium" class="mobile-roast"> Medium</label>
+      <label class="filter-option"><input type="checkbox" value="Dark" class="mobile-roast"> Dark</label>`;
+            document.getElementById('mobileMinPrice').value = activeFilters.minPrice;
+            document.getElementById('mobileMaxPrice').value = activeFilters.maxPrice;
+            // sync checkboxes
+            document.querySelectorAll('.mobile-origin').forEach(cb => {
+                if (activeFilters.origins.includes(cb.value)) cb.checked = true;
+            });
+            document.querySelectorAll('.mobile-roast').forEach(cb => {
+                if (activeFilters.roasts.includes(cb.value)) cb.checked = true;
+            });
+        }
+
+        function applyMobileFilters() {
+            const origins = Array.from(document.querySelectorAll('.mobile-origin:checked')).map(cb => cb.value);
+            const roasts = Array.from(document.querySelectorAll('.mobile-roast:checked')).map(cb => cb.value);
+            const min = parseInt(document.getElementById('mobileMinPrice').value) || 0;
+            const max = parseInt(document.getElementById('mobileMaxPrice').value) || 150;
+            // sync desktop checkboxes
+            document.querySelectorAll('.filter-origin').forEach(cb => cb.checked = origins.includes(cb.value));
+            document.querySelectorAll('.filter-roast').forEach(cb => cb.checked = roasts.includes(cb.value));
+            document.getElementById('minPrice').value = min;
+            document.getElementById('maxPrice').value = max;
+            gatherFilters();
+            closeMobileFilters();
+        }
+
+        function resetFilters() {
+            document.querySelectorAll('.filter-origin, .filter-roast').forEach(cb => cb.checked = false);
+            document.getElementById('minPrice').value = 0;
+            document.getElementById('maxPrice').value = 150;
+            gatherFilters();
+            if (document.getElementById('mobileFiltersOverlay').style.display === 'flex') {
+                syncMobileFilters();
+                applyMobileFilters();
+            }
+        }
+
+        // mobile filters overlay
+        function openMobileFilters() {
+            syncMobileFilters();
+            document.getElementById('mobileFiltersOverlay').style.display = 'flex';
+        }
+        function closeMobileFilters() {
+            document.getElementById('mobileFiltersOverlay').style.display = 'none';
+        }
+
+        // event listeners
+        document.querySelectorAll('.filter-origin, .filter-roast').forEach(el => el.addEventListener('change', gatherFilters));
+        document.getElementById('minPrice').addEventListener('input', gatherFilters);
+        document.getElementById('maxPrice').addEventListener('input', gatherFilters);
+        document.getElementById('sortSelect').addEventListener('change', (e) => { currentSort = e.target.value; filterAndRender(); });
+        document.getElementById('resetFiltersBtn').addEventListener('click', resetFilters);
+        document.getElementById('mobileFilterBtn').addEventListener('click', openMobileFilters);
+        document.getElementById('closeFiltersBtn').addEventListener('click', closeMobileFilters);
+        document.getElementById('mobileResetBtn').addEventListener('click', () => { resetFilters(); closeMobileFilters(); });
+        document.getElementById('mobileFiltersOverlay').addEventListener('click', (e) => { if (e.target === document.getElementById('mobileFiltersOverlay')) closeMobileFilters(); });
+        const mobileApply = document.createElement('button');
+        mobileApply.innerText = 'Apply filters';
+        mobileApply.style.marginTop = '20px';
+        mobileApply.style.width = '100%';
+        mobileApply.style.padding = '12px';
+        mobileApply.style.background = 'var(--green)';
+        mobileApply.style.color = 'white';
+        mobileApply.style.border = 'none';
+        mobileApply.style.borderRadius = '40px';
+        mobileApply.addEventListener('click', applyMobileFilters);
+        document.querySelector('.mobile-filters-panel').appendChild(mobileApply);
+
+        // floating beans
+        const canvas = document.getElementById('beansCanvas');
+        for (let i = 0; i < 22; i++) {
+            const bean = document.createElement('div');
+            bean.className = 'bean';
+            bean.style.left = Math.random() * 100 + 'vw';
+            bean.style.animationDuration = (16 + Math.random() * 24) + 's';
+            bean.style.animationDelay = (-Math.random() * 30) + 's';
+            bean.style.width = (12 + Math.random() * 14) + 'px';
+            bean.style.height = (16 + Math.random() * 16) + 'px';
+            canvas.appendChild(bean);
+        }
+
+        // scroll reveal observer
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // mobile nav toggle
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        window.toggleMenu = toggleMenu;
+
+        // initial render
+        gatherFilters();
+    </script>
+</body>
+
+</html>

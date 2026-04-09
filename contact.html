@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ganzi – Contact | Rwandan Coffee, Polish Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #1E3A2F;
+            --green-light: #2a5040;
+            --red: #9E2A2B;
+            --amber: #D4A373;
+            --amber-light: #e8c4a0;
+            --cream: #FDF7F0;
+            --charcoal: #1C1C1C;
+            --white: #ffffff;
+            --folk-border: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3Cpath d='M18 10 Q25 2 32 10 Q39 18 46 10 Q53 2 60 10 Q67 18 74 10' stroke='%239E2A2B' fill='none' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='70' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+        }
+
+        /* floating beans background */
+        .beans-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bean {
+            position: absolute;
+            width: 18px;
+            height: 28px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at 35% 35%, #a07040, #3a1a08);
+            opacity: 0.07;
+            animation: floatBean linear infinite;
+        }
+
+        .bean::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(30deg);
+            width: 2px;
+            height: 70%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+        }
+
+        @keyframes floatBean {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+            }
+        }
+
+        /* folk divider */
+        .folk-divider {
+            height: 20px;
+            background-image: var(--folk-border);
+            background-repeat: repeat-x;
+            background-position: center;
+            opacity: 0.6;
+            margin: 0 auto;
+        }
+
+        /* scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(30, 58, 47, 0.96);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            height: 70px;
+            border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 34px;
+            height: 34px;
+        }
+
+        .nav-logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: var(--amber);
+            letter-spacing: 0.18em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(253, 247, 240, 0.85);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--amber);
+        }
+
+        .nav-cart {
+            color: rgba(253, 247, 240, 0.85);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-cart:hover {
+            color: var(--amber);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--red);
+            color: white;
+            font-size: 0.6rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--amber);
+            transition: all 0.3s;
+        }
+
+        /* hero */
+        .contact-hero {
+            background: linear-gradient(135deg, rgba(30, 58, 47, 0.85), rgba(28, 28, 28, 0.7)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=80');
+            background-size: cover;
+            background-position: center 40%;
+            padding: 140px 8% 80px;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+        }
+
+        .contact-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 6vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .contact-hero p {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        /* contact main layout */
+        .contact-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 5%;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        /* contact info cards */
+        .info-card {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .info-card i {
+            font-size: 2rem;
+            color: var(--amber);
+            margin-bottom: 16px;
+        }
+
+        .info-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--green);
+            margin-bottom: 12px;
+        }
+
+        .info-card p,
+        .info-card a {
+            color: #555;
+            line-height: 1.6;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .info-card a:hover {
+            color: var(--red);
+        }
+
+        .social-links-contact {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .social-links-contact a {
+            width: 42px;
+            height: 42px;
+            background: var(--cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green);
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .social-links-contact a:hover {
+            background: var(--amber);
+            color: white;
+        }
+
+        /* form styling */
+        .contact-form {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-form h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--green);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.9rem;
+            background: var(--cream);
+            transition: border 0.3s;
+        }
+
+        .form-group textarea {
+            border-radius: 24px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--amber);
+        }
+
+        .submit-btn {
+            background: var(--green);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: var(--red);
+        }
+
+        /* map section */
+        .map-section {
+            padding: 0 5% 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .map-container {
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: 0;
+            display: block;
+        }
+
+        /* opening hours */
+        .hours-card {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            margin-top: 30px;
+        }
+
+        .hours-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--green);
+            margin-bottom: 16px;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .hours-list li span:first-child {
+            font-weight: 500;
+        }
+
+        .hours-list li span:last-child {
+            color: #777;
+        }
+
+        /* footer */
+        footer {
+            background: var(--charcoal);
+            padding: 80px 8% 40px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-brand .nav-logo-text {
+            font-size: 2rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin: 1rem 0;
+            max-width: 250px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 14px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--amber);
+            border-color: var(--amber);
+            color: var(--charcoal);
+        }
+
+        .footer-col h4 {
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 300;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--amber);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 0.5rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 11px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            font-family: 'Jost', sans-serif;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            padding: 11px 18px;
+            background: var(--amber);
+            color: var(--charcoal);
+            border: none;
+            cursor: pointer;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+        }
+
+        /* notification */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--green);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification.show {
+            transform: none;
+        }
+
+        /* responsive */
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--green);
+                padding: 20px;
+                gap: 1rem;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .contact-hero {
+                padding: 120px 5% 70px;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .map-container iframe {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="beans-canvas" id="beansCanvas"></div>
+
+    <nav id="mainNav">
+        <a href="#" class="nav-logo">
+            <svg class="nav-logo-icon" viewBox="0 0 34 34" fill="none">
+                <ellipse cx="17" cy="17" rx="12" ry="16" fill="#D4A373" opacity="0.15" />
+                <ellipse cx="17" cy="17" rx="9" ry="12" fill="none" stroke="#D4A373" stroke-width="1.5" />
+                <path d="M17 5 Q22 11 17 17 Q12 23 17 29" stroke="#D4A373" stroke-width="1.2" fill="none" />
+                <circle cx="25" cy="9" r="3.5" fill="#9E2A2B" opacity="0.7" />
+            </svg>
+            <span class="nav-logo-text">GANZI</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Shop.html">Shop</a></li>
+            <li><a href="Story.html">Our Story</a></li>
+            <li><a href="#">Process</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div class="nav-cart"><i class="fa fa-shopping-bag"></i><span class="cart-badge" id="cartCount">0</span>
+            </div>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="contact-hero reveal">
+        <h1>Let's Connect</h1>
+        <p>Visit our roastery, drop us a message, or follow our journey from Rwanda to Poland.</p>
+    </section>
+
+    <div class="folk-divider"></div>
+
+    <div class="contact-section">
+        <div class="contact-grid">
+            <!-- Left side: contact info & hours -->
+            <div class="contact-info">
+                <div class="info-card reveal">
+                    <i class="fa fa-map-marker-alt"></i>
+                    <h3>Roastery & Café</h3>
+                    <p>ul. Długa 22, 31-147 Kraków, Poland</p>
+                    <p style="margin-top: 8px;">📍 Located in the heart of Kraków's old town, next to the Planty park.
+                    </p>
+                </div>
+                <div class="info-card reveal reveal-delay-1">
+                    <i class="fa fa-phone-alt"></i>
+                    <h3>Call us</h3>
+                    <p><a href="tel:+48123334455">+48 12 333 44 55</a></p>
+                    <p>Mon–Fri, 9:00 – 17:00</p>
+                </div>
+                <div class="info-card reveal reveal-delay-2">
+                    <i class="fa fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p><a href="mailto:hello@ganzi.com">hello@ganzi.com</a></p>
+                    <p>For wholesale or press inquiries: <a href="mailto:partners@ganzi.com">partners@ganzi.com</a></p>
+                </div>
+                <div class="hours-card reveal reveal-delay-3">
+                    <h3>Opening Hours</h3>
+                    <ul class="hours-list">
+                        <li><span>Monday – Friday</span><span>8:00 – 18:00</span></li>
+                        <li><span>Saturday</span><span>9:00 – 16:00</span></li>
+                        <li><span>Sunday</span><span>Closed (online orders ship next day)</span></li>
+                    </ul>
+                </div>
+                <div class="info-card reveal">
+                    <i class="fa fa-heart"></i>
+                    <h3>Follow Us</h3>
+                    <div class="social-links-contact">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right side: contact form -->
+            <div class="contact-form reveal">
+                <h2>Send us a message</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your name *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email address *" required>
+                    </div>
+                    <div class="form-group">
+                        <select>
+                            <option>I'm interested in...</option>
+                            <option>General inquiry</option>
+                            <option>Wholesale / partnership</option>
+                            <option>Coffee subscription</option>
+                            <option>Event / workshop</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="How can we help you? *" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send message <i class="fa fa-arrow-right"></i></button>
+                </form>
+                <p style="margin-top: 20px; font-size: 0.75rem; color: #888;">We'll reply within 24 hours. Dziękujemy!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map section -->
+    <div class="map-section reveal">
+        <div class="map-container">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2561.384615384615!2d19.934676215400296!3d50.06149927942441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47165b9b2c5a8f4b%3A0x5b2b5e5a7f5c5e5!2sD%C5%82uga%2022%2C%2031-147%20Krak%C3%B3w%2C%20Poland!5e0!3m2!1sen!2spl!4v1650000000000!5m2!1sen!2spl"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+
+    <div class="folk-divider"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
+                <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.
+                </p>
+                <div class="footer-socials">
+                    <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
+                    <a class="social-icon" href="#"><i class="fab fa-facebook"></i></a>
+                    <a class="social-icon" href="#"><i class="fab fa-tiktok"></i></a>
+                    <a class="social-icon" href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#">All Coffees</a></li>
+                    <li><a href="#">Ganzi Ruby</a></li>
+                    <li><a href="#">Ganzi Green</a></li>
+                    <li><a href="#">Ganzi Gold</a></li>
+                    <li><a href="#">Subscription</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Kraków Roastery</a></li>
+                    <li><a href="#">Rwanda</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <p style="font-size:0.83rem; margin-bottom:0.8rem;">New batches, stories & recipes — straight to your
+                    inbox.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your e-mail">
+                    <button><i class="fa fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 Ganzi Coffee. All rights reserved.</span>
+            <span>Made with <span style="color:var(--red)">♥</span> in Kraków × Kigali</span>
+        </div>
+    </footer>
+
+    <!-- Notification for form submission demo -->
+    <div class="notification" id="notification"><i class="fa fa-check-circle"></i> <span>Message sent! We'll reply
+            soon.</span></div>
+
+    <script>
+        // floating beans
+        const canvas = document.getElementById('beansCanvas');
+        for (let i = 0; i < 24; i++) {
+            const bean = document.createElement('div');
+            bean.className = 'bean';
+            bean.style.left = Math.random() * 100 + 'vw';
+            bean.style.animationDuration = (14 + Math.random() * 24) + 's';
+            bean.style.animationDelay = (-Math.random() * 30) + 's';
+            bean.style.width = (10 + Math.random() * 14) + 'px';
+            bean.style.height = (14 + Math.random() * 16) + 'px';
+            canvas.appendChild(bean);
+        }
+
+        // scroll reveal
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // cart badge
+        let cartCount = 0;
+        const stored = localStorage.getItem('ganziCartCount');
+        if (stored) cartCount = parseInt(stored);
+        document.getElementById('cartCount').innerText = cartCount;
+
+        window.addToCart = function () {
+            cartCount++;
+            localStorage.setItem('ganziCartCount', cartCount);
+            document.getElementById('cartCount').innerText = cartCount;
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.innerHTML = '<i class="fa fa-check-circle"></i> Added to bag!';
+            notif.style.position = 'fixed';
+            notif.style.bottom = '30px';
+            notif.style.right = '30px';
+            notif.style.background = 'var(--green)';
+            notif.style.color = 'white';
+            notif.style.padding = '14px 24px';
+            notif.style.borderRadius = '50px';
+            notif.style.zIndex = '9999';
+            notif.style.transform = 'translateX(120%)';
+            notif.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
+            document.body.appendChild(notif);
+            setTimeout(() => { notif.style.transform = 'none'; }, 10);
+            setTimeout(() => { notif.style.transform = 'translateX(120%)'; setTimeout(() => notif.remove(), 400); }, 2500);
+        };
+
+        // form submission demo (prevents actual send, shows notification)
+        const form = document.getElementById('contactForm');
+        const notif = document.getElementById('notification');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+            form.reset();
+        });
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        window.toggleMenu = toggleMenu;
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 80) nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.25)';
+            else nav.style.boxShadow = 'none';
+        });
+    </script>
+</body>
+
+</html>

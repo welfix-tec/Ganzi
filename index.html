@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ganzi – Rwandan Coffee, Polish Soul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --green: #1E3A2F;
+      --green-light: #2a5040;
+      --red: #9E2A2B;
+      --amber: #D4A373;
+      --amber-light: #e8c4a0;
+      --cream: #FDF7F0;
+      --charcoal: #1C1C1C;
+      --white: #ffffff;
+      --folk-border: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3Cpath d='M18 10 Q25 2 32 10 Q39 18 46 10 Q53 2 60 10 Q67 18 74 10' stroke='%239E2A2B' fill='none' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='70' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3C/svg%3E");
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ─── FLOATING BEANS ─── */
+    .beans-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bean {
+      position: absolute;
+      width: 18px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 35% 35%, #a07040, #3a1a08);
+      opacity: 0.07;
+      animation: floatBean linear infinite;
+    }
+
+    .bean::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(30deg);
+      width: 2px;
+      height: 70%;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 2px;
+    }
+
+    @keyframes floatBean {
+      0% {
+        transform: translateY(110vh) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+      }
+    }
+
+    /* ─── FOLK DIVIDER ─── */
+    .folk-divider {
+      height: 20px;
+      background-image: var(--folk-border);
+      background-repeat: repeat-x;
+      background-position: center;
+      margin: 0 auto;
+      opacity: 0.6;
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.15s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.45s;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(30, 58, 47, 0.96);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 70px;
+      border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.18em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253, 247, 240, 0.85);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--amber);
+    }
+
+    .nav-cart {
+      color: rgba(253, 247, 240, 0.85);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-cart:hover {
+      color: var(--amber);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: var(--red);
+      color: white;
+      font-size: 0.6rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--amber);
+      transition: all 0.3s;
+    }
+
+    /* ─── HERO CAROUSEL ─── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .slides-wrapper {
+      display: flex;
+      height: 100%;
+      transition: transform 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.06);
+      transition: transform 8s ease;
+    }
+
+    .slide.active .slide-bg {
+      transform: scale(1);
+    }
+
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(30, 58, 47, 0.75) 0%, rgba(28, 28, 28, 0.5) 100%);
+    }
+
+    .slide-content {
+      position: absolute;
+      bottom: 18%;
+      left: 8%;
+      max-width: 580px;
+      color: white;
+      z-index: 2;
+    }
+
+    .slide-tag {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.7s 0.3s;
+    }
+
+    .slide-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.7s 0.5s;
+    }
+
+    .slide-headline em {
+      font-style: italic;
+      color: var(--amber-light);
+    }
+
+    .slide-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.7s 0.65s;
+    }
+
+    .slide.active .slide-tag,
+    .slide.active .slide-headline,
+    .slide.active .slide-sub {
+      opacity: 1;
+      transform: none;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 34px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: white;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: background 0.3s, transform 0.7s 0.8s, opacity 0.7s 0.8s;
+    }
+
+    .slide.active .btn-primary {
+      opacity: 1;
+      transform: none;
+    }
+
+    .btn-primary:hover {
+      background: #7a1f20;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--green);
+      border: 1.5px solid var(--green);
+    }
+
+    .btn-outline:hover {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-amber {
+      background: var(--amber);
+      color: var(--charcoal);
+    }
+
+    .btn-amber:hover {
+      background: #b88650;
+      color: white;
+    }
+
+    /* Carousel controls */
+    .carousel-arrows {
+      position: absolute;
+      bottom: 10%;
+      right: 6%;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .arrow-btn {
+      width: 46px;
+      height: 46px;
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .arrow-btn:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--charcoal);
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: var(--amber);
+      width: 26px;
+      border-radius: 4px;
+    }
+
+    /* ─── SECTION COMMON ─── */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--green);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+    }
+
+    .body-text {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: #444;
+      max-width: 540px;
+    }
+
+    /* ─── CONNECTION SECTION ─── */
+    .connection {
+      background: var(--cream);
+      padding: 120px 8%;
+    }
+
+    .connection-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .connection-text blockquote {
+      margin: 2rem 0;
+      border-left: 3px solid var(--amber);
+      padding-left: 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--green);
+      line-height: 1.6;
+    }
+
+    .connection-image {
+      position: relative;
+    }
+
+    .connection-image img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .connection-image::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: -18px;
+      right: 18px;
+      bottom: 18px;
+      border: 2px solid var(--amber);
+      z-index: -1;
+    }
+
+    .kawa-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 90px;
+      height: 90px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+    }
+
+    .kawa-badge span:first-child {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      line-height: 1;
+    }
+
+    .kawa-badge span:last-child {
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* ─── PRODUCTS ─── */
+    .products {
+      background: var(--green);
+      padding: 120px 8%;
+    }
+
+    .products-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .products-header .section-title {
+      color: var(--cream);
+    }
+
+    .products-header .section-label {
+      color: var(--amber);
+    }
+
+    .products-header p {
+      color: rgba(253, 247, 240, 0.7);
+      font-weight: 300;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--cream);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .product-card:hover .product-img {
+      transform: scale(1.04);
+    }
+
+    .product-body {
+      padding: 24px 24px 28px;
+    }
+
+    .product-origin {
+      font-size: 0.67rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    .product-notes {
+      font-size: 0.82rem;
+      color: #777;
+      font-style: italic;
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--green);
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .add-btn {
+      padding: 10px 20px;
+      background: var(--green);
+      color: white;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .add-btn::before {
+      content: 'Add to Bag';
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      opacity: 0;
+      transition: opacity 0.3s;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover::before {
+      opacity: 1;
+    }
+
+    /* ─── PROCESS ─── */
+    .process {
+      background: var(--cream);
+      padding: 120px 8%;
+    }
+
+    .process-header {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--amber), var(--red), var(--amber));
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 10px;
+      position: relative;
+    }
+
+    .step-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.2rem;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+
+    .step:hover .step-icon {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--amber);
+      transform: scale(1.12);
+    }
+
+    .step-num {
+      position: absolute;
+      top: -8px;
+      right: calc(50% - 38px);
+      width: 20px;
+      height: 20px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.62rem;
+      color: white;
+      font-weight: 600;
+      z-index: 2;
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--green);
+      margin-bottom: 0.4rem;
+    }
+
+    .step-desc {
+      font-size: 0.78rem;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials {
+      background: #f3ebe0;
+      padding: 120px 8%;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .testi-card {
+      background: white;
+      padding: 36px 32px 30px;
+      position: relative;
+    }
+
+    .testi-card::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--amber);
+      position: absolute;
+      top: 10px;
+      left: 24px;
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .testi-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+      padding-top: 20px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .testi-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--amber);
+    }
+
+    .testi-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--green);
+    }
+
+    .testi-role {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    .stars {
+      color: var(--amber);
+      font-size: 0.7rem;
+      margin-bottom: 2px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--charcoal);
+      padding: 80px 8% 40px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-brand .nav-logo-text {
+      font-size: 2rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin: 1rem 0;
+      max-width: 250px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 14px;
+      margin-top: 0.5rem;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .social-icon:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--charcoal);
+    }
+
+    .footer-col h4 {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-col ul li a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 300;
+      transition: color 0.3s;
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--amber);
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-top: 0.5rem;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 11px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .newsletter-form input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .newsletter-form input:focus {
+      border-color: var(--amber);
+    }
+
+    .newsletter-form button {
+      padding: 11px 18px;
+      background: var(--amber);
+      color: var(--charcoal);
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.3s;
+    }
+
+    .newsletter-form button:hover {
+      background: var(--amber-light);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .footer-bottom span {
+      color: var(--amber);
+    }
+
+    /* ─── NOTIFICATION ─── */
+    .notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--green);
+      color: white;
+      padding: 16px 22px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 9999;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification.show {
+      transform: none;
+    }
+
+    .notification i {
+      color: var(--amber);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .steps {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+      }
+
+      .steps::before {
+        display: none;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--green);
+        padding: 20px 5%;
+        gap: 1rem;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .connection-inner {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+
+      .connection-image::before {
+        display: none;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .testi-grid {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+        margin: 0 auto;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .slide-content {
+        bottom: 22%;
+        left: 5%;
+        right: 5%;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .carousel-arrows {
+        bottom: 8%;
+        right: 4%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating beans background -->
+  <div class="beans-canvas" id="beansCanvas"></div>
+
+  <!-- NAVIGATION -->
+  <nav id="mainNav">
+    <a href="#" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="17" cy="17" rx="12" ry="16" fill="#D4A373" opacity="0.15" />
+        <ellipse cx="17" cy="17" rx="9" ry="12" fill="none" stroke="#D4A373" stroke-width="1.5" />
+        <path d="M17 5 Q22 11 17 17 Q12 23 17 29" stroke="#D4A373" stroke-width="1.2" fill="none" />
+        <circle cx="25" cy="9" r="3.5" fill="#9E2A2B" opacity="0.7" />
+        <circle cx="25" cy="9" r="1.5" fill="#9E2A2B" />
+      </svg>
+      <span class="nav-logo-text">GANZI</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="Story.html">Our Story</a></li>
+      <li><a href="Shop.html">Shop</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div class="nav-cart"><i class="fa fa-shopping-bag"></i><span class="cart-badge" id="cartCount">0</span></div>
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO CAROUSEL -->
+  <section class="hero" id="hero">
+    <div class="slides-wrapper" id="slidesWrapper">
+
+      <!-- Slide 1 -->
+      <div class="slide active" id="slide0">
+        <div class="slide-bg"
+          style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')"></div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+          <p class="slide-tag">Rwanda × Poland</p>
+          <h1 class="slide-headline">Coffee from the <em>volcanic</em><br />heart of Rwanda</h1>
+          <p class="slide-sub">Arabica beans grown on the hills of Rwanda, roasted with passion in a Polish roastery.
+          </p>
+          <a href="#process" class="btn btn-primary">Discover the Journey</a>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide" id="slide1">
+        <div class="slide-bg"
+          style="background-image:url('https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=1600&q=80')">
+        </div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+          <p class="slide-tag">Hand-Picked</p>
+          <h1 class="slide-headline">Every cherry<br />chosen <em>with care</em></h1>
+          <p class="slide-sub">Hand harvesting, natural fermentation — quality visible in every sip.</p>
+          <a href="#products" class="btn btn-primary">Order Now</a>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide" id="slide2">
+        <div class="slide-bg"
+          style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=80')">
+        </div>
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+          <p class="slide-tag">Polish Roastery</p>
+          <h1 class="slide-headline">Small batches,<br /><em>great</em> precision</h1>
+          <p class="slide-sub">Our Kraków roastery blends café tradition with the modernity of specialty coffee.</p>
+          <a href="#connection" class="btn btn-primary">Meet Us</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Arrows -->
+    <div class="carousel-arrows">
+      <button class="arrow-btn" onclick="changeSlide(-1)"><i class="fa fa-arrow-left"></i></button>
+      <button class="arrow-btn" onclick="changeSlide(1)"><i class="fa fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Dots -->
+    <div class="dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+    </div>
+  </section>
+
+  <!-- FOLK DIVIDER -->
+  <div class="folk-divider"></div>
+
+  <!-- POLISH-RWANDAN CONNECTION -->
+  <section class="connection" id="connection">
+    <div class="connection-inner">
+      <div class="connection-text reveal">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title">Where Rwandan<br />hills meet<br /><em>a Polish café</em></h2>
+        <blockquote>"Coffee is not a drink — it is a conversation between the earth and a person."</blockquote>
+        <p class="body-text">
+          Ganzi was born from a simple belief: that the world's finest coffee should reach cups directly, without
+          middlemen. We work directly with a farmers' cooperative in Rwanda's Southern Province, where volcanic soils
+          and a tropical climate create ideal conditions for arabica with an exceptional flavour profile.
+        </p>
+        <p class="body-text" style="margin-top:1rem;">
+          Poland has long cherished <em>slow-brewed coffee</em> — sipped in good company, without hurry. Ganzi continues
+          that café tradition, offering specialty coffee that unites the warmth of Polish hospitality with the wild
+          nature of Rwanda. Every batch is roasted in a small roastery on the outskirts of Kraków, with deep respect for
+          the bean and the craft.
+        </p>
+        <br />
+        <a href="#products" class="btn btn-outline" style="margin-top:0.5rem;">Our Coffees</a>
+      </div>
+      <div class="connection-image reveal reveal-delay-1">
+        <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80"
+          alt="Polish café with Ganzi coffee" />
+        <div class="kawa-badge">
+          <span>Specialty</span>
+          <span>Coffee</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOLK DIVIDER -->
+  <div class="folk-divider"></div>
+
+  <!-- SIGNATURE COFFEES -->
+  <section class="products" id="products">
+    <div class="products-header reveal">
+      <p class="section-label">Our Selection</p>
+      <h2 class="section-title" style="color:var(--cream)">Coffee <em>with character</em></h2>
+      <p>Three exceptional profiles — each one tells a different story from Rwanda's hills.</p>
+    </div>
+    <div class="product-grid">
+      <div class="product-card reveal">
+        <img class="product-img" src="https://images.unsplash.com/photo-1509785307050-d4066910ec1e?w=800&q=80"
+          alt="Nyamasheke Natural" />
+        <div class="product-body">
+          <p class="product-origin">Nyamasheke, Rwanda · Natural</p>
+          <h3 class="product-name">Ganzi Ruby</h3>
+          <p class="product-notes">Blackcurrant, plum, dark chocolate and a subtle hint of vanilla. Full body, gentle
+            acidity.</p>
+          <div class="product-footer">
+            <span class="product-price">68 zł / 250g</span>
+            <button class="add-btn" onclick="addToCart()">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-1">
+        <img class="product-img" src="https://images.unsplash.com/photo-1501492673258-2af1a4ece880?w=800&q=80"
+          alt="Huye Washed" />
+        <div class="product-body">
+          <p class="product-origin">Huye, Rwanda · Washed</p>
+          <h3 class="product-name">Ganzi Green</h3>
+          <p class="product-notes">Green apple, white tea, citrus and jasmine blossom. Clean, vibrant acidity with a
+            silky finish.</p>
+          <div class="product-footer">
+            <span class="product-price">74 zł / 250g</span>
+            <button class="add-btn" onclick="addToCart()">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <img class="product-img" src="https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80"
+          alt="Rulindo Honey" />
+        <div class="product-body">
+          <p class="product-origin">Rulindo, Rwanda · Honey</p>
+          <h3 class="product-name">Ganzi Gold</h3>
+          <p class="product-notes">Honey, apricot, caramel and a light hint of hazelnut. Perfectly balanced — a
+            specialty classic.</p>
+          <div class="product-footer">
+            <span class="product-price">71 zł / 250g</span>
+            <button class="add-btn" onclick="addToCart()">Add to Bag</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOLK DIVIDER -->
+  <div class="folk-divider"></div>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="process-header reveal">
+      <p class="section-label">From Bean to Cup</p>
+      <h2 class="section-title">The Ganzi Journey —<br /><em>Rwanda to Your Cup</em></h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-icon">🌿</div>
+        <h4 class="step-title">Grown in Rwanda</h4>
+        <p class="step-desc">Arabica on volcanic soils at 1,600–2,000 m above sea level.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">2</div>
+        <div class="step-icon">☕</div>
+        <h4 class="step-title">Hand Harvested</h4>
+        <p class="step-desc">Only ripe cherries, picked and sorted by local cooperatives.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">3</div>
+        <div class="step-icon">🚢</div>
+        <h4 class="step-title">Shipped to Poland</h4>
+        <p class="step-desc">Green beans in vacuum-sealed bags, preserving freshness throughout the journey.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">4</div>
+        <div class="step-icon">🔥</div>
+        <h4 class="step-title">Roasted in Kraków</h4>
+        <p class="step-desc">Small batches, hand-roasted in a traditional drum — craftsmanship over mass production.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">5</div>
+        <div class="step-icon">📦</div>
+        <h4 class="step-title">Delivered to You</h4>
+        <p class="step-desc">Freshly roasted, packed in the week of brewing — straight to your door.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOLK DIVIDER -->
+  <div class="folk-divider"></div>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials-header reveal">
+      <p class="section-label">What Our Customers Say</p>
+      <h2 class="section-title">A taste that <em>stays with you</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <p class="testi-text">Ganzi Ruby is the best coffee I've ever had. The notes of blackcurrant and dark chocolate
+          are incredible — this is not marketing, this is real flavour. Perfect for a Polish-style morning.</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80"
+            alt="Marta K." />
+          <div>
+            <div class="stars">★★★★★</div>
+            <div class="testi-name">Marta K.</div>
+            <div class="testi-role">Barista, Kraków</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <p class="testi-text">Finally a specialty coffee with a transparent supply chain. You can tell that Ganzi truly
+          cares about the farmers and quality. I only buy here — Ganzi is the new ritual in my home.</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
+            alt="Piotr W." />
+          <div>
+            <div class="stars">★★★★★</div>
+            <div class="testi-name">Piotr W.</div>
+            <div class="testi-role">Coffee Enthusiast, Warsaw</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <p class="testi-text">As a café owner, I was looking for something exceptional. Ganzi Green became a hit with my
+          guests. Rwanda's story told through flavour — that is what true specialty is!</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80"
+            alt="Aleksandra N." />
+          <div>
+            <div class="stars">★★★★★</div>
+            <div class="testi-name">Aleksandra N.</div>
+            <div class="testi-role">Café Owner, Wrocław</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:0.5rem;">
+          <span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
+        </a>
+        <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.</p>
+        <div class="footer-socials">
+          <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
+          <a class="social-icon" href="#"><i class="fab fa-facebook"></i></a>
+          <a class="social-icon" href="#"><i class="fab fa-tiktok"></i></a>
+          <a class="social-icon" href="#"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">Ganzi Ruby</a></li>
+          <li><a href="#">Ganzi Green</a></li>
+          <li><a href="#">Ganzi Gold</a></li>
+          <li><a href="#">Gift Sets</a></li>
+          <li><a href="#">Subscription</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Kraków Roastery</a></li>
+          <li><a href="#">Rwanda</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p style="font-size:0.83rem;line-height:1.6;margin-bottom:0.8rem;">New batches, stories from the roastery and
+          recipes for the perfect cup — straight to your inbox.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your e-mail" />
+          <button><i class="fa fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Ganzi Coffee. All rights reserved.</span>
+      <span>Made with <span style="color:var(--red)">♥</span> in Rwanda × Poland</span>
+    </div>
+  </footer>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notification">
+    <i class="fa fa-check-circle"></i>
+    <span>Added to bag!</span>
+  </div>
+
+  <script>
+    // ─── FLOATING BEANS ───
+    const canvas = document.getElementById('beansCanvas');
+    for (let i = 0; i < 18; i++) {
+      const bean = document.createElement('div');
+      bean.className = 'bean';
+      bean.style.left = Math.random() * 100 + 'vw';
+      bean.style.animationDuration = (18 + Math.random() * 22) + 's';
+      bean.style.animationDelay = (-Math.random() * 30) + 's';
+      bean.style.width = (12 + Math.random() * 12) + 'px';
+      bean.style.height = (18 + Math.random() * 14) + 'px';
+      canvas.appendChild(bean);
+    }
+
+    // ─── HERO CAROUSEL ───
+    let currentSlide = 0;
+    const totalSlides = 3;
+    let autoplayTimer;
+
+    function goToSlide(n) {
+      document.getElementById('slide' + currentSlide).classList.remove('active');
+      document.querySelectorAll('.dot')[currentSlide].classList.remove('active');
+      currentSlide = (n + totalSlides) % totalSlides;
+      document.getElementById('slide' + currentSlide).classList.add('active');
+      document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+      document.getElementById('slidesWrapper').style.transform = `translateX(-${currentSlide * 100}%)`;
+      resetAutoplay();
+    }
+
+    function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+    function resetAutoplay() {
+      clearInterval(autoplayTimer);
+      autoplayTimer = setInterval(() => changeSlide(1), 5500);
+    }
+    resetAutoplay();
+
+    // Touch support
+    let touchStartX = 0;
+    document.getElementById('hero').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+    document.getElementById('hero').addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+    });
+
+    // ─── SCROLL REVEAL ───
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ─── CART ───
+    let cartCount = 0;
+    function addToCart() {
+      cartCount++;
+      document.getElementById('cartCount').textContent = cartCount;
+      const notif = document.getElementById('notification');
+      notif.classList.add('show');
+      setTimeout(() => notif.classList.remove('show'), 2800);
+    }
+
+    // ─── NAV MOBILE ───
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    // ─── NAV SCROLL SHADOW ───
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 80) {
+        nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.25)';
+      } else {
+        nav.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+
+</html>
