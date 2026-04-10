@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ganzi – The Process | From Rwandan Hills to Your Cup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green: #1E3A2F;
+      --green-light: #2a5040;
+      --red: #9E2A2B;
+      --amber: #D4A373;
+      --amber-light: #e8c4a0;
+      --cream: #FDF7F0;
+      --charcoal: #1C1C1C;
+      --white: #ffffff;
+      --folk-border: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3Cpath d='M18 10 Q25 2 32 10 Q39 18 46 10 Q53 2 60 10 Q67 18 74 10' stroke='%239E2A2B' fill='none' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='70' cy='10' r='4' fill='%239E2A2B' opacity='0.3'/%3E%3C/svg%3E");
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* floating beans background */
+    .beans-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bean {
+      position: absolute;
+      width: 18px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 35% 35%, #a07040, #3a1a08);
+      opacity: 0.07;
+      animation: floatBean linear infinite;
+    }
+
+    .bean::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(30deg);
+      width: 2px;
+      height: 70%;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 2px;
+    }
+
+    @keyframes floatBean {
+      0% { transform: translateY(110vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    /* folk divider */
+    .folk-divider {
+      height: 20px;
+      background-image: var(--folk-border);
+      background-repeat: repeat-x;
+      background-position: center;
+      opacity: 0.6;
+      margin: 0 auto;
+    }
+
+    /* scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(30, 58, 47, 0.96);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 70px;
+      border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 34px;
+      height: 34px;
+    }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.18em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253, 247, 240, 0.85);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--amber);
+    }
+    .nav-cart {
+      color: rgba(253, 247, 240, 0.85);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-cart:hover {
+      color: var(--amber);
+    }
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: var(--red);
+      color: white;
+      font-size: 0.6rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--amber);
+      transition: all 0.3s;
+    }
+
+    /* hero */
+    .process-hero {
+      background: linear-gradient(135deg, rgba(30,58,47,0.85), rgba(28,28,28,0.7)), url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1600&q=80');
+      background-size: cover;
+      background-position: center 35%;
+      padding: 140px 8% 80px;
+      text-align: center;
+      color: white;
+      margin-top: 70px;
+    }
+    .process-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 4rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .process-hero p {
+      font-size: 1rem;
+      max-width: 650px;
+      margin: 0 auto;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    /* process steps */
+    .process-steps {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 5%;
+    }
+    .step-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 80px;
+      background: white;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    }
+    .step-item.reverse {
+      direction: rtl;
+    }
+    .step-item.reverse .step-text {
+      direction: ltr;
+    }
+    .step-image {
+      height: 100%;
+      min-height: 320px;
+    }
+    .step-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .step-text {
+      padding: 48px 40px;
+    }
+    .step-number {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .step-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+    .step-text p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #555;
+      margin-bottom: 16px;
+    }
+    .step-highlight {
+      background: var(--cream);
+      padding: 16px 20px;
+      border-radius: 20px;
+      margin-top: 20px;
+      border-left: 4px solid var(--amber);
+    }
+    .step-highlight i {
+      color: var(--amber);
+      margin-right: 10px;
+    }
+
+    /* additional info: quality seals */
+    .quality-section {
+      background: var(--green);
+      padding: 80px 5%;
+      color: white;
+      text-align: center;
+    }
+    .quality-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+    }
+    .quality-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1000px;
+      margin: 50px auto 0;
+    }
+    .quality-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 30px 20px;
+      transition: transform 0.3s;
+    }
+    .quality-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.15);
+    }
+    .quality-card i {
+      font-size: 2.5rem;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+    .quality-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .quality-card p {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      line-height: 1.5;
+    }
+
+    /* footer */
+    footer {
+      background: var(--charcoal);
+      padding: 80px 8% 40px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 50px;
+      margin-bottom: 60px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .footer-brand .nav-logo-text {
+      font-size: 2rem;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin: 1rem 0;
+      max-width: 250px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 14px;
+    }
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .social-icon:hover {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--charcoal);
+    }
+    .footer-col h4 {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul {
+      list-style: none;
+    }
+    .footer-col ul li {
+      margin-bottom: 0.6rem;
+    }
+    .footer-col ul li a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 300;
+      transition: color 0.3s;
+    }
+    .footer-col ul li a:hover {
+      color: var(--amber);
+    }
+    .newsletter-form {
+      display: flex;
+      margin-top: 0.5rem;
+    }
+    .newsletter-form input {
+      flex: 1;
+      padding: 11px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      font-family: 'Jost', sans-serif;
+      outline: none;
+    }
+    .newsletter-form button {
+      padding: 11px 18px;
+      background: var(--amber);
+      color: var(--charcoal);
+      border: none;
+      cursor: pointer;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    /* notification */
+    .notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--green);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 50px;
+      display: flex;
+      gap: 10px;
+      z-index: 9999;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .notification.show {
+      transform: none;
+    }
+
+    /* responsive */
+    @media (max-width: 1024px) {
+      .step-item {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .step-item.reverse {
+        direction: ltr;
+      }
+      .step-image {
+        order: 1;
+      }
+      .step-text {
+        order: 2;
+        padding: 40px 30px;
+      }
+      .quality-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 40px auto 0;
+      }
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 5%;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--green);
+        padding: 20px;
+        gap: 1rem;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .process-hero {
+        padding: 120px 5% 70px;
+      }
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="beans-canvas" id="beansCanvas"></div>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 34 34" fill="none">
+      <ellipse cx="17" cy="17" rx="12" ry="16" fill="#D4A373" opacity="0.15" />
+      <ellipse cx="17" cy="17" rx="9" ry="12" fill="none" stroke="#D4A373" stroke-width="1.5" />
+      <path d="M17 5 Q22 11 17 17 Q12 23 17 29" stroke="#D4A373" stroke-width="1.2" fill="none" />
+      <circle cx="25" cy="9" r="3.5" fill="#9E2A2B" opacity="0.7" />
+    </svg>
+    <span class="nav-logo-text">GANZI</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="our-story.html">Our Story</a></li>
+    <li><a href="process.html" class="active">Process</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div style="display:flex; align-items:center; gap:20px;">
+    <div class="nav-cart"><i class="fa fa-shopping-bag"></i><span class="cart-badge" id="cartCount">0</span></div>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<section class="process-hero reveal">
+  <h1>From Rwanda to Your Cup</h1>
+  <p>Every step of our journey is guided by respect for the bean, the farmer, and the craft. Discover how Ganzi brings you the finest specialty coffee.</p>
+</section>
+
+<div class="folk-divider"></div>
+
+<div class="process-steps">
+  <!-- Step 1 -->
+  <div class="step-item reveal">
+    <div class="step-image">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Coffee growing in Rwanda">
+    </div>
+    <div class="step-text">
+      <div class="step-number">01 / GROWING</div>
+      <h2>Volcanic Highlands</h2>
+      <p>Our coffee grows on the misty hills of Rwanda's Southern Province, at altitudes between 1,600 and 2,200 metres. The region's volcanic soil — rich in minerals and perfectly drained — combined with abundant rainfall and cool nights, creates ideal conditions for Bourbon Arabica trees.</p>
+      <p>Farmers in the Nyamasheke, Huye, and Rulindo cooperatives hand-pick only the ripest red cherries, ensuring exceptional sweetness and complexity. Shade trees protect the plants and promote biodiversity.</p>
+      <div class="step-highlight">
+        <i class="fa fa-leaf"></i> <strong>Varietals:</strong> Red Bourbon, Bourbon Mayaguez — known for their floral aroma and balanced acidity.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-item reverse reveal">
+    <div class="step-image">
+      <img src="https://images.unsplash.com/photo-1587045528096-b76c8d2f4e2a?w=800&q=80" alt="Hand sorting cherries">
+    </div>
+    <div class="step-text">
+      <div class="step-number">02 / HARVEST & PROCESSING</div>
+      <h2>Meticulous Sorting</h2>
+      <p>Each morning, cherries are delivered to the washing station, where they undergo rigorous hand-sorting to remove underripe or damaged fruit. We use <strong>fully washed processing</strong> — cherries are depulped, fermented in clean water for 12–24 hours, then washed and dried on raised African beds for 10–15 days.</p>
+      <p>For special lots, we also offer honey and natural processing, which enhance fruity notes and body. The result is a clean, vibrant cup that expresses Rwanda's unique terroir.</p>
+      <div class="step-highlight">
+        <i class="fa fa-tint"></i> <strong>Processing methods:</strong> Washed (classic), Honey (sweet & complex), Natural (intense fruit).
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-item reveal">
+    <div class="step-image">
+      <img src="https://images.unsplash.com/photo-1532968961962-8a0cb3a2d4f5?w=800&q=80" alt="Drying coffee on raised beds">
+    </div>
+    <div class="step-text">
+      <div class="step-number">03 / MILLING & EXPORT</div>
+      <h2>From Cherry to Green Bean</h2>
+      <p>After drying, the parchment coffee is rested for two months, then hulled, graded by size and density, and hand-sorted again for defects. The green beans are packed in vacuum-sealed GrainPro bags to preserve freshness during shipping.</p>
+      <p>From the capital Kigali, the beans travel by sea to Gdańsk, then by road to our roastery in Kraków. The entire journey is carbon‑offset, and we maintain direct relationships with every cooperative.</p>
+      <div class="step-highlight">
+        <i class="fa fa-ship"></i> <strong>Traceability:</strong> Each bag has a QR code linking to the farm and processing date.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step-item reverse reveal">
+    <div class="step-image">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Roasting in Kraków">
+    </div>
+    <div class="step-text">
+      <div class="step-number">04 / ROASTING IN KRAKÓW</div>
+      <h2>Small-Batch Craftsmanship</h2>
+      <p>In our Kraków roastery, we roast every batch on a traditional drum roaster, with capacities of just 15–30 kg. We use a slow, controlled profile to highlight each bean's intrinsic character — never rushing, never hiding flaws.</p>
+      <p>Our roastmaster tastes every lot multiple times, adjusting temperature and airflow to achieve a perfect balance of sweetness, acidity, and body. We offer three profiles: <strong>Light (for floral clarity), Medium (balanced & versatile), and Dark (rich & chocolatey).</strong></p>
+      <div class="step-highlight">
+        <i class="fa fa-fire"></i> <strong>Freshness guarantee:</strong> All coffee is roasted within 48 hours of shipping.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step-item reveal">
+    <div class="step-image">
+      <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80" alt="Freshly brewed coffee">
+    </div>
+    <div class="step-text">
+      <div class="step-number">05 / PACKAGING & BREWING</div>
+      <h2>From Our Hands to Yours</h2>
+      <p>After roasting, beans are rested for 12–24 hours, then packed in recyclable, resealable bags with one‑way valves. We include brewing tips and a roast date sticker. Whether you use a V60, French press, or espresso machine, Ganzi coffee reveals its full potential.</p>
+      <p>We also offer a <strong>subscription service</strong> that delivers freshly roasted coffee to your door every week or month — so you never run out of exceptional Rwandan coffee.</p>
+      <div class="step-highlight">
+        <i class="fa fa-mug-hot"></i> <strong>Brew like a pro:</strong> Every bag includes a recipe card tailored to the roast.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="folk-divider"></div>
+
+<!-- Quality & sustainability -->
+<section class="quality-section reveal">
+  <h2>Quality & Sustainability</h2>
+  <p>Every choice we make honours the farmer, the land, and your cup.</p>
+  <div class="quality-grid">
+    <div class="quality-card">
+      <i class="fa fa-hand-holding-heart"></i>
+      <h3>Direct Trade</h3>
+      <p>We pay 30–50% above Fairtrade minimum prices, invest in community projects, and visit our partners twice a year.</p>
+    </div>
+    <div class="quality-card">
+      <i class="fa fa-chart-line"></i>
+      <h3>Specialty Grade</h3>
+      <p>All our lots score 84+ points on the SCA scale — only the top 5% of world coffee production.</p>
+    </div>
+    <div class="quality-card">
+      <i class="fa fa-recycle"></i>
+      <h3>Eco-Friendly</h3>
+      <p>Compostable packaging, carbon-neutral shipping, and solar energy at our roastery.</p>
+    </div>
+  </div>
+</section>
+
+<div class="folk-divider"></div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
+      <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.</p>
+      <div class="footer-socials">
+        <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
+        <a class="social-icon" href="#"><i class="fab fa-facebook"></i></a>
+        <a class="social-icon" href="#"><i class="fab fa-tiktok"></i></a>
+        <a class="social-icon" href="#"><i class="fab fa-pinterest"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">All Coffees</a></li>
+        <li><a href="#">Ganzi Ruby</a></li>
+        <li><a href="#">Ganzi Green</a></li>
+        <li><a href="#">Ganzi Gold</a></li>
+        <li><a href="#">Subscription</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Kraków Roastery</a></li>
+        <li><a href="#">Rwanda</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="font-size:0.83rem; margin-bottom:0.8rem;">New batches, stories & recipes — straight to your inbox.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Your e-mail">
+        <button><i class="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Ganzi Coffee. All rights reserved.</span>
+    <span>Made with <span style="color:var(--red)">♥</span> in Kraków × Kigali</span>
+  </div>
+</footer>
+
+<div class="notification" id="notification"><i class="fa fa-check-circle"></i> <span>Added to bag!</span></div>
+
+<script>
+  // floating beans
+  const canvas = document.getElementById('beansCanvas');
+  for (let i = 0; i < 24; i++) {
+    const bean = document.createElement('div');
+    bean.className = 'bean';
+    bean.style.left = Math.random() * 100 + 'vw';
+    bean.style.animationDuration = (14 + Math.random() * 24) + 's';
+    bean.style.animationDelay = (-Math.random() * 30) + 's';
+    bean.style.width = (10 + Math.random() * 14) + 'px';
+    bean.style.height = (14 + Math.random() * 16) + 'px';
+    canvas.appendChild(bean);
+  }
+
+  // scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // cart badge
+  let cartCount = 0;
+  const stored = localStorage.getItem('ganziCartCount');
+  if (stored) cartCount = parseInt(stored);
+  document.getElementById('cartCount').innerText = cartCount;
+
+  window.addToCart = function() {
+    cartCount++;
+    localStorage.setItem('ganziCartCount', cartCount);
+    document.getElementById('cartCount').innerText = cartCount;
+    const notif = document.getElementById('notification');
+    notif.classList.add('show');
+    setTimeout(() => notif.classList.remove('show'), 2500);
+  };
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  window.toggleMenu = toggleMenu;
+
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('mainNav');
+    if (window.scrollY > 80) nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.25)';
+    else nav.style.boxShadow = 'none';
+  });
+</script>
+</body>
+</html>
