@@ -694,7 +694,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="Shop.html" class="active">Shop</a></li>
             <li><a href="Story.html">Our Story</a></li>
-            <li><a href="process.html">Process</a></li>
+            <li><a href="Process.html">Process</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
         <div style="display:flex; align-items:center; gap:20px;">
@@ -708,7 +708,7 @@
 
     <section class="shop-hero reveal">
         <h1>Our Collection</h1>
-        <p>Directly from Rwandan hills, roasted in Kraków — each bag tells a story of craftsmanship and passion.</p>
+        <p>Directly from Rwandan hills, crafted in Rwanda — each bag tells a story of craftsmanship and passion.</p>
     </section>
 
     <div class="folk-divider"></div>
@@ -783,7 +783,7 @@
     <footer id="footer">
         <div class="footer-top">
             <div class="footer-brand"><span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
-                <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.
+                <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, crafted in Rwanda.
                 </p>
                 <div class="footer-socials"><a class="social-icon" href="#"><i class="fab fa-instagram"></i></a><a
                         class="social-icon" href="#"><i class="fab fa-facebook"></i></a><a class="social-icon"
@@ -803,7 +803,7 @@
                 <h4>Company</h4>
                 <ul>
                     <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Kraków Roastery</a></li>
+                    <li><a href="#">Kigali Roastery</a></li>
                     <li><a href="#">Rwanda</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">Contact</a></li>
@@ -812,12 +812,14 @@
             <div class="footer-col">
                 <h4>Newsletter</h4>
                 <p style="font-size:0.83rem;margin-bottom:0.8rem;">New batches, stories & recipes.</p>
-                <div class="newsletter-form"><input type="email" placeholder="Your e-mail" /><button><i
-                            class="fa fa-paper-plane"></i></button></div>
+                <form class="newsletter-form" id="newsletterForm" name="subscribe" method="POST" action="https://formspree.io/f/xovqebwk">
+                    <input type="email" name="email" placeholder="Your e-mail" required />
+                    <button type="submit"><i class="fa fa-paper-plane"></i></button>
+                </form>
             </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 Ganzi Coffee. All rights reserved.</span><span>Made with <span
-                    style="color:var(--red)">♥</span> in Kraków × Kigali</span></div>
+        <div class="footer-bottom"><span>© 2026 Ganzi Coffee. All rights reserved.</span><span>Made with <span
+                    style="color:var(--red)">♥</span> in Rwanda × Kigali</span></div>
     </footer>
 
     <div class="notification" id="notification"><i class="fa fa-check-circle"></i> <span>Added to bag!</span></div>
@@ -1023,6 +1025,7 @@
         // initial render
         gatherFilters();
     </script>
+    <script src="newsletter-config.js"></script>
 </body>
 
 </html>
