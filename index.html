@@ -1118,7 +1118,7 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="Story.html">Our Story</a></li>
       <li><a href="Shop.html">Shop</a></li>
-      <li><a href="process.html">Process</a></li>
+      <li><a href="Process.html">Process</a></li>
       <li><a href="#testimonials">Reviews</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -1171,7 +1171,7 @@
         <div class="slide-content">
           <p class="slide-tag">Polish Roastery</p>
           <h1 class="slide-headline">Small batches,<br /><em>great</em> precision</h1>
-          <p class="slide-sub">Our Kraków roastery blends café tradition with the modernity of specialty coffee.</p>
+          <p class="slide-sub">Our Rwanda roastery blends café tradition with the modernity of specialty coffee.</p>
           <a href="#connection" class="btn btn-primary">Meet Us</a>
         </div>
       </div>
@@ -1314,7 +1314,7 @@
       <div class="step reveal reveal-delay-3">
         <div class="step-num">4</div>
         <div class="step-icon">🔥</div>
-        <h4 class="step-title">Roasted in Kraków</h4>
+        <h4 class="step-title">Crafted in Rwanda</h4>
         <p class="step-desc">Small batches, hand-roasted in a traditional drum — craftsmanship over mass production.</p>
       </div>
       <div class="step reveal reveal-delay-3">
@@ -1385,7 +1385,7 @@
         <a href="#" class="nav-logo" style="margin-bottom:0.5rem;">
           <span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
         </a>
-        <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.</p>
+        <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, crafted in Rwanda.</p>
         <div class="footer-socials">
           <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
           <a class="social-icon" href="#"><i class="fab fa-facebook"></i></a>
@@ -1407,7 +1407,7 @@
         <h4>Company</h4>
         <ul>
           <li><a href="#">Our Story</a></li>
-          <li><a href="#">Kraków Roastery</a></li>
+          <li><a href="#">Kigali Roastery</a></li>
           <li><a href="#">Rwanda</a></li>
           <li><a href="#">Blog</a></li>
           <li><a href="#">Contact</a></li>
@@ -1417,15 +1417,15 @@
         <h4>Newsletter</h4>
         <p style="font-size:0.83rem;line-height:1.6;margin-bottom:0.8rem;">New batches, stories from the roastery and
           recipes for the perfect cup — straight to your inbox.</p>
-        <div class="newsletter-form">
-          <input type="email" placeholder="Your e-mail" />
-          <button><i class="fa fa-paper-plane"></i></button>
-        </div>
+        <form class="newsletter-form" id="newsletterForm" name="subscribe" method="POST" action="https://formspree.io/f/xovqebwk">
+          <input type="email" name="email" placeholder="Your e-mail" required />
+          <button type="submit"><i class="fa fa-paper-plane"></i></button>
+        </form>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Ganzi Coffee. All rights reserved.</span>
-      <span>Made with <span style="color:var(--red)">♥</span> in Rwanda × Poland</span>
+      <span>Made with <span style="color:var(--red)">♥</span> in Rwanda × Kigali</span>
     </div>
   </footer>
 
@@ -1511,6 +1511,7 @@
       }
     });
   </script>
+  <script src="newsletter-config.js"></script>
 </body>
 
 </html>
