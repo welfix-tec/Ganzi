@@ -508,10 +508,10 @@
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="index.html">Home</a></li>
-    <li><a href="shop.html">Shop</a></li>
-    <li><a href="story.html">Our Story</a></li>
-    <li><a href="process.html" class="active">Process</a></li>
-    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#">Shop</a></li>
+    <li><a href="#">Our Story</a></li>
+    <li><a href="#" class="active">Process</a></li>
+    <li><a href="#">Contact</a></li>
   </ul>
   <div style="display:flex; align-items:center; gap:20px;">
     <div class="nav-cart"><i class="fa fa-shopping-bag"></i><span class="cart-badge" id="cartCount">0</span></div>
@@ -532,7 +532,7 @@
   <!-- Step 1 -->
   <div class="step-item reveal">
     <div class="step-image">
-      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Coffee growing in Rwanda">
+      <img src="images/harvesting coffee.jpeg" alt="Coffee growing in Rwanda">
     </div>
     <div class="step-text">
       <div class="step-number">01 / GROWING</div>
@@ -548,7 +548,7 @@
   <!-- Step 2 -->
   <div class="step-item reverse reveal">
     <div class="step-image">
-      <img src="https://images.unsplash.com/photo-1587045528096-b76c8d2f4e2a?w=800&q=80" alt="Hand sorting cherries">
+      <img src="images/happy farmers.jpeg" alt="Hand sorting cherries">
     </div>
     <div class="step-text">
       <div class="step-number">02 / HARVEST & PROCESSING</div>
@@ -564,13 +564,13 @@
   <!-- Step 3 -->
   <div class="step-item reveal">
     <div class="step-image">
-      <img src="https://images.unsplash.com/photo-1532968961962-8a0cb3a2d4f5?w=800&q=80" alt="Drying coffee on raised beds">
+      <img src="images/drying coffee.jpeg" alt="Drying coffee on raised beds" >
     </div>
     <div class="step-text">
       <div class="step-number">03 / MILLING & EXPORT</div>
       <h2>From Cherry to Green Bean</h2>
       <p>After drying, the parchment coffee is rested for two months, then hulled, graded by size and density, and hand-sorted again for defects. The green beans are packed in vacuum-sealed GrainPro bags to preserve freshness during shipping.</p>
-      <p>From the capital Kigali, the beans travel by sea to Gdańsk, then by road to our roastery in Kraków. The entire journey is carbon‑offset, and we maintain direct relationships with every cooperative.</p>
+      <p>From the capital Kigali, the beans travel by sea to Gdańsk, then by road to our roastery in Rwanda. The entire journey is carbon‑offset, and we maintain direct relationships with every cooperative.</p>
       <div class="step-highlight">
         <i class="fa fa-ship"></i> <strong>Traceability:</strong> Each bag has a QR code linking to the farm and processing date.
       </div>
@@ -580,12 +580,13 @@
   <!-- Step 4 -->
   <div class="step-item reverse reveal">
     <div class="step-image">
-      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Roasting in Kraków">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Roasting in Rwanda">
     </div>
     <div class="step-text">
-      <div class="step-number">04 / ROASTING IN KRAKÓW</div>
+      <div class="step-number">04 / ROASTING IN Rwanda</div>
       <h2>Small-Batch Craftsmanship</h2>
-      <p>In our Kraków roastery, we roast every batch on a traditional drum roaster, with capacities of just 15–30 kg. We use a slow, controlled profile to highlight each bean's intrinsic character — never rushing, never hiding flaws.</p>
+      <p>In our Kigali roastery, nestled in the hills of Rwanda's capital, we roast every batch on a traditional drum roaster, with capacities of just 15–30 kg. We use a slow, controlled profile to honour the bean's origin — never rushing, never masking imperfections — allowing the natural sweetness and bright acidity of Rwandan Bourbon arabica to shine through.</p>
+
       <p>Our roastmaster tastes every lot multiple times, adjusting temperature and airflow to achieve a perfect balance of sweetness, acidity, and body. We offer three profiles: <strong>Light (for floral clarity), Medium (balanced & versatile), and Dark (rich & chocolatey).</strong></p>
       <div class="step-highlight">
         <i class="fa fa-fire"></i> <strong>Freshness guarantee:</strong> All coffee is roasted within 48 hours of shipping.
@@ -642,7 +643,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <span class="nav-logo-text" style="color:var(--amber);">GANZI</span>
-      <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, roasted with love in Kraków.</p>
+      <p>Rwandan arabica, Polish soul. Specialty coffee from the heart of Africa, crafted in Rwanda.</p>
       <div class="footer-socials">
         <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
         <a class="social-icon" href="#"><i class="fab fa-facebook"></i></a>
@@ -664,7 +665,7 @@
       <h4>Company</h4>
       <ul>
         <li><a href="#">Our Story</a></li>
-        <li><a href="#">Kraków Roastery</a></li>
+        <li><a href="#">Kigali Roastery</a></li>
         <li><a href="#">Rwanda</a></li>
         <li><a href="#">Blog</a></li>
         <li><a href="#">Contact</a></li>
@@ -673,15 +674,15 @@
     <div class="footer-col">
       <h4>Newsletter</h4>
       <p style="font-size:0.83rem; margin-bottom:0.8rem;">New batches, stories & recipes — straight to your inbox.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="Your e-mail">
-        <button><i class="fa fa-paper-plane"></i></button>
-      </div>
+      <form class="newsletter-form" id="newsletterForm" name="subscribe" method="POST" action="https://formspree.io/f/xovqebwk">
+        <input type="email" name="email" placeholder="Your e-mail" required>
+        <button type="submit"><i class="fa fa-paper-plane"></i></button>
+      </form>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Ganzi Coffee. All rights reserved.</span>
-    <span>Made with <span style="color:var(--red)">♥</span> in Kraków × Kigali</span>
+    <span>© 2026 Ganzi Coffee. All rights reserved.</span>
+    <span>Made with <span style="color:var(--red)">♥</span> in Rwanda × Kigali</span>
   </div>
 </footer>
 
@@ -733,5 +734,6 @@
     else nav.style.boxShadow = 'none';
   });
 </script>
+<script src="newsletter-config.js"></script>
 </body>
 </html>
